@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>canvas 星空粒子运动</title>
+    <style>
+        body{background-color: #161616}
+        .canvasBg{
+            width:100%;
+            height:100%;
+            background: black;
+        }
+        #starrySky {background: black; margin-left: auto; margin-right: auto; }
+
+    </style>
+</head>
+<body>
+    <div class="canvasBg">
+        <canvas id="starrySky" width="1200" height="500"></canvas>
+    </div>
+
+
+    <script src="js/jquery-2.2.4.min.js"></script>
+    <script src="js/starrySky.js"></script>
+    <script>
+        //生成小球对象
+        var count = 300,
+            balls = [];
+        for(var i = 0; i < count; i++) {
+            var ball = new Ball();
+            balls.push(ball);
+        }
+        var timer = setInterval(function() {
+            //下面是小球移动的函数
+            function startMove() {
+                ctx.clearRect(0, 0, 1500, 1200);
+                for(var i = 0; i < balls.length; i++) {
+                    balls[i].draw();
+                    balls[i].move();
+                }
+                adjustballCanvas();
+            }
+            startMove();
+        }, 100);
+        //写一个方法,检测小球和starrySky画布碰撞的时候,将速度变成相反的
+        function adjustballCanvas() {
+            for(var i = 0; i < balls.length; i++) {
+                //首先判断水平方向的
+                if(balls[i].centerX < balls[i].radius || balls[i].centerX > (starrySky.width - balls[i].radius)) {
+                    balls[i].speedX *= -1;
+                }
+                if(balls[i].centerY < balls[i].radius || balls[i].centerY > (starrySky.height - balls[i].radius)) {
+                    balls[i].speedY *= -1;
+                }
+            }
+        }
+    </script>
+
+
+</body>
+</html>
